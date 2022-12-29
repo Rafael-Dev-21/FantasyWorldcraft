@@ -7,8 +7,8 @@ pipelines:
           caches:
             - gradle
           script:
-            - ./gradlew assembleDebug
-            - ./gradlew lint
+            - bash gradlew assembleDebug
+            - bash gradlew lint
           artifacts:
             - app/build/outputs/**
             - app/build/reports/**
