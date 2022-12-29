@@ -9,6 +9,7 @@ dist/
 
 # Compiled Java class files
 *.class
+*.dex
 
 # Compiled Python bytecode
 *.py[cod]
@@ -18,6 +19,12 @@ dist/
 
 # Package files
 *.jar
+*.apk
+*.aar
+
+# Gradle
+.gradle/
+build/
 
 # Maven
 target/
@@ -47,4 +54,3 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-

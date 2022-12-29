@@ -1,0 +1,12 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    compileSdkVersion 32
+    namespace 'com.rboladao.rgine'
+}
+
+dependencies {
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+}

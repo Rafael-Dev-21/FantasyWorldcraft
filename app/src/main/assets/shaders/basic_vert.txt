@@ -1,0 +1,16 @@
+#version 300 es
+
+layout(location = 0) in vec4 position;
+layout(location = 1) in vec2 texCoord;
+
+out vec2 v_TexCoord;
+
+uniform mat4 proj;
+uniform mat4 view;
+uniform mat4 model;
+
+void main()
+{
+	gl_Position = proj * view * model * position;
+	v_TexCoord = texCoord;
+}
