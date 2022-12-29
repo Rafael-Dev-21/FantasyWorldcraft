@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
-import com.itsaky.androidide.logsender.LogSender;
 
 public class MainActivity extends Activity {
   private static final String TAG = "MainActivity.class";
@@ -13,8 +12,6 @@ public class MainActivity extends Activity {
 
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    LogSender.startLogging(this);
-
     Log.i(TAG, "onCreate");
     setContentView(R.layout.activity_main);
     
