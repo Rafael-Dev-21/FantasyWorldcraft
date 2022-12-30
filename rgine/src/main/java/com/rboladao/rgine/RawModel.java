@@ -15,11 +15,8 @@ public class RawModel {
     private VertexArray vao;
     private IndexBuffer ibo;
     
-    public RawModel(float[] vertices, int[] indices) {
+    public RawModel(float[] vertices, VertexLayout layout, int[] indices) {
         vao = new VertexArray();
-        VertexLayout layout = new VertexLayout();
-        layout.push(GLES30.GL_FLOAT, 3, false);
-        layout.push(GLES30.GL_FLOAT, 2, false);
         FloatBuffer vertexData = storeArrayToFloatBuffer(vertices);
         
         vao.addBuffer(new VertexBuffer(vertexData, vertices.length * Float.BYTES), layout);
