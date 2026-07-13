@@ -10,9 +10,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.joml.Vector3f;
 
 public class World {
-  private Map<Long, Chunk> chunks = new ConcurrentHashMap<>();
+  private final Map<Long, Chunk> chunks = new ConcurrentHashMap<>();
   private int wi, wj;
-  private ChunkMaker cm;
+  private final ChunkMaker cm;
 
   public World(ChunkMaker cm, float x, float z) {
     this.cm = cm;
