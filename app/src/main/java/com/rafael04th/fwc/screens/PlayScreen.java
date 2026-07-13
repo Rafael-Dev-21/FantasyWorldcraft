@@ -3,6 +3,7 @@ package com.rafael04th.fwc.screens;
 import android.opengl.GLES20;
 import android.util.Log;
 import com.rafael04th.fwc.FantasyWorldcraft;
+import com.rafael04th.fwc.audio.Music;
 import com.rafael04th.fwc.core.Game;
 import com.rafael04th.fwc.core.Loader;
 import com.rafael04th.fwc.core.Screen;
@@ -52,6 +53,7 @@ public class PlayScreen extends Screen {
   private ShaderProgram cubeProgram, uiProgram, whiteProgram;
   private Texture boxTexture;
   private Camera fpsCamera;
+  private Music bgm;
 
   private Loader loader;
 
@@ -84,6 +86,10 @@ public class PlayScreen extends Screen {
       fpsCamera.moveXZ(0, 0);
       fpsCamera.moveY(34);
       fpsCamera.turn(0, 0);
+      
+      bgm = game.getAudio().newMusic("orange-fields-evermore.mp3");
+      bgm.setVolume(0.5f);
+      bgm.setLooping(true);
 
       world = new World(new RudeChunkMakerV1(System.nanoTime()), 0, 0);
       uploader = new ChunkUploader();
@@ -162,6 +168,7 @@ public class PlayScreen extends Screen {
       glEnable(GL_DEPTH_TEST);
       glEnable(GL_CULL_FACE);
       glClearColor(0, 0, 0.7f, 1f);
+      bgm.play();
     } catch (Exception e) {
       ((FantasyWorldcraft) game).toastException(e);
     }
@@ -169,6 +176,7 @@ public class PlayScreen extends Screen {
 
   public void pause() {
     mesher.stop();
+    bgm.pause();
   }
 
   public void update(float deltaTime) {
@@ -257,6 +265,13 @@ public class PlayScreen extends Screen {
         spriteBatcher.drawSprite(btnJump.x+btnJump.width/2, btnJump.y+btnJump.height/2, btnJump.width, btnJump.height, btnJumpRegion);
         spriteBatcher.drawSprite(btnNextBlock.x+btnNextBlock.width/2, btnNextBlock.y+btnNextBlock.height/2, btnNextBlock.width, btnNextBlock.height, joystickHandleRegion);
       }
+      {
+        // Aimcross
+        float x = glGraphics.getWidth()/2;
+        float y = glGraphics.getHeight()/2;
+        float len = Math.min(x,y)/10;
+        spriteBatcher.drawSprite(x, y, len, len, joystickHandleRegion);
+      }
       spriteBatcher.endBatch(uiProgram);
     } catch (Exception e) {
       ((FantasyWorldcraft) game).toastException(e);
@@ -268,6 +283,10 @@ public class PlayScreen extends Screen {
     if (cubeProgram != null) cubeProgram.dispose();
     if (boxTexture != null) boxTexture.dispose();
     if (mesher != null) mesher.stop();
+    if (bgm != null) {
+      bgm.stop();
+      bgm.dispose();
+    }
   }
   
   static void check(String where) {
