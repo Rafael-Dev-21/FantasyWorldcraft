@@ -10,6 +10,7 @@ import com.rafael04th.fwc.core.Screen;
 import com.rafael04th.fwc.core.impl.GLGame;
 import com.rafael04th.fwc.core.impl.GLGraphics;
 import com.rafael04th.fwc.entity.Player;
+import com.rafael04th.fwc.gameplay.Hotbar;
 import com.rafael04th.fwc.graphics.Camera;
 import com.rafael04th.fwc.graphics.Mesh;
 import com.rafael04th.fwc.graphics.MeshBuilder;
@@ -38,7 +39,7 @@ import org.joml.Matrix4f;
 import static android.opengl.GLES20.*;
 
 public class PlayScreen extends Screen {
-  public static final Block[] HOTBAR = new Block[]{Blocks.COBBLE, Blocks.DIRT, Blocks.SAND, Blocks.GRASS};
+  public static final Hotbar HOTBAR = new Hotbar(Blocks.COBBLE, Blocks.DIRT, Blocks.SAND, Blocks.GRASS);
   private static final float PLACE_BREAK_COOLDOWN = 0.1f;
 
   GLGraphics glGraphics;
@@ -70,8 +71,7 @@ public class PlayScreen extends Screen {
   
   private MeshBuilder wireMesher;
   private Mesh selectMesh=null;
-  
-  int hotbarIndex = 0;
+
   float placeBreakTimer = 0;
   
   Transform selectTransform;
@@ -198,12 +198,12 @@ public class PlayScreen extends Screen {
           Optional<BlockHit> result = world.hit(fpsCamera, 11f);
           if (result.isPresent() && placeBreakTimer <= 0.001f) {
             BlockHit hit = result.get();
-            world.set((int)(hit.x+hit.normalX), (int)(hit.y+hit.normalY), (int)(hit.z+hit.normalZ), HOTBAR[hotbarIndex]);
+            world.set((int)(hit.x+hit.normalX), (int)(hit.y+hit.normalY), (int)(hit.z+hit.normalZ), HOTBAR.current());
             placeBreakTimer = PLACE_BREAK_COOLDOWN;
           }
         } else if (btnJump.update(te)) {
         } else if (btnNextBlock.update(te)) {
-          if (te.type == Input.TouchEvent.TOUCH_DOWN) hotbarIndex = (hotbarIndex + 1) % HOTBAR.length;
+          if (te.type == Input.TouchEvent.TOUCH_DOWN) HOTBAR.next();
         } else if (orbit.update(deltaTime, te)) {}
       }
       uploader.update();
