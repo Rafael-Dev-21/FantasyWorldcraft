@@ -28,6 +28,7 @@ import com.rafael04th.fwc.input.OrbitControl;
 import com.rafael04th.fwc.input.VirtualButton;
 import com.rafael04th.fwc.input.VirtualJoystick;
 import com.rafael04th.fwc.render.HudRenderer;
+import com.rafael04th.fwc.render.SelectionRenderer;
 import com.rafael04th.fwc.world.Block;
 import com.rafael04th.fwc.world.BlockHit;
 import com.rafael04th.fwc.world.Blocks;
@@ -45,16 +46,16 @@ public class PlayScreen extends Screen {
 
 
   GLGraphics glGraphics;
-  private float[] scratch = new float[16];
+  private final float[] scratch = new float[16];
 
-  private Matrix4f scratchMat = new Matrix4f();
+  private final Matrix4f scratchMat = new Matrix4f();
 
   private World world;
   private ChunkUploader uploader;
   private ChunkMesher mesher;
   private BlockInteractor interactor;
 
-  private ShaderProgram cubeProgram, uiProgram, whiteProgram;
+  private ShaderProgram cubeProgram, uiProgram;
   private Texture boxTexture;
   private Camera fpsCamera;
   private Music bgm;
@@ -71,13 +72,7 @@ public class PlayScreen extends Screen {
   private HudRenderer hudRenderer;
   
   private Player player;
-  
-  private MeshBuilder wireMesher;
-  private Mesh selectMesh=null;
-
-  float placeBreakTimer = 0;
-  
-  Transform selectTransform;
+  private SelectionRenderer selectionRenderer;
 
   public PlayScreen(Game game) {
     super(game);
@@ -98,8 +93,6 @@ public class PlayScreen extends Screen {
       uploader = new ChunkUploader();
       mesher = new ChunkMesher(world, uploader, false, true, true, 128 / 16, 128 / 16);
       interactor = new BlockInteractor(world);
-      selectTransform = new Transform();
-      selectTransform.scale.set(1.01f, 1.01f, 1.01f);
       
       {
         int cx = Math.min(glGraphics.getWidth(), glGraphics.getHeight())/5;
@@ -143,8 +136,6 @@ public class PlayScreen extends Screen {
 
       player = world.newPlayer();
       
-      wireMesher = new MeshBuilder(false, false, false, 1, 1);
-      
     } catch (Exception e) {
       ((FantasyWorldcraft) game).toastException(e);
     }
@@ -155,7 +146,6 @@ public class PlayScreen extends Screen {
       mesher.start();
       cubeProgram = loader.loadShader("textured2.vert", "textured2.frag");
       uiProgram = loader.loadShader("textured1.vert", "textured1.frag");
-      whiteProgram = loader.loadShader("justpos.vert", "justwhite.frag");
       boxTexture = loader.loadTexture("TerrainAtlas.png");
       worldRenderer = new WorldRenderer(cubeProgram, fpsCamera, boxTexture);
       
@@ -171,9 +161,8 @@ public class PlayScreen extends Screen {
         hudRenderer = new HudRenderer(joystickBaseRegion, joystickHandleRegion, btnBreakRegion, btnPlaceRegion, btnJumpRegion, joystickHandleRegion, joystickHandleRegion);
       }
       spriteBatcher = new SpriteBatcher(1000);
-      
-      selectMesh = new Mesh(/*wireMesher.cube(new float[]{0,0,0}, new int[]{0,0,0}).build()*/ new WireFrameMesher().cube(new float[]{0,0,0}).build(), VoxelFormats.JUST_POSITION);
 
+      selectionRenderer = new SelectionRenderer(loader.loadShader("justpos.vert", "justwhite.frag"));
       glEnable(GL_DEPTH_TEST);
       glEnable(GL_CULL_FACE);
       glClearColor(0, 0, 0.7f, 1f);
@@ -221,29 +210,7 @@ public class PlayScreen extends Screen {
       
       {
         Optional<BlockHit> result = interactor.hit(fpsCamera, 11f);
-
-        if (result.isPresent()) {
-          Log.d("PlayScreen.class", "HIT!");
-          BlockHit hit = result.get();
-          selectTransform.translation.set(hit.x, hit.y, hit.z);
-          whiteProgram.bind();
-          check("whiteProgram.bind()");
-          selectMesh.bind();
-          check("selectMesh.bind()");
-          fpsCamera.getCameraMatrix().mul(selectTransform.getTransformMatrix(), scratchMat).get(scratch);
-          whiteProgram.setAttribs(selectMesh.getFormat());
-          check("whiteProgram.setAttribs()");
-          whiteProgram.setUniformMat4("uMVP", scratch, 0);
-          check("whiteProgram.setUniformMat4()");
-          whiteProgram.setUniform4f("uColor", 1f, 0, 1f, 1f);
-          check("whiteProgram.setUniform4f()");
-          glDisableVertexAttribArray(1);
-          glDisableVertexAttribArray(2);
-          glDepthMask(false);
-          selectMesh.render(GL_LINES);
-          check("selectMesh.render()");
-          glDepthMask(true);
-        }
+        selectionRenderer.render(fpsCamera, result);
       }
 
       scratchMat.identity().ortho2D(0, glGraphics.getWidth(), glGraphics.getHeight(), 0).get(scratch);
@@ -266,6 +233,8 @@ public class PlayScreen extends Screen {
       bgm.stop();
       bgm.dispose();
     }
+    if (selectionRenderer != null) selectionRenderer.dispose();
+    if (spriteBatcher != null) spriteBatcher.dispose();
   }
   
   static void check(String where) {

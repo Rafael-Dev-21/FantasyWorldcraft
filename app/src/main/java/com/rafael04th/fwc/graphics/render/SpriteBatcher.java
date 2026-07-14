@@ -106,4 +106,8 @@ public class SpriteBatcher {
 
     numSprites++;
   }
+
+    public void dispose() {
+      if (mesh != null) mesh.dispose();
+    }
 }
