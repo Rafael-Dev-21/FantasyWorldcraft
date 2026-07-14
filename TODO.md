@@ -2,7 +2,7 @@
 
 - [x] Separar Hotbar de PlayScreen
 - [ ] Separar interface da PlayScreen
-- [ ] Separar interação com blocos
+- [x] Separar interação com blocos
 - [ ] Criar Item e ItemStack
 - [ ] Criar inventário
 - [ ] Adicionar árvores
