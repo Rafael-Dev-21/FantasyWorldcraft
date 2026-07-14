@@ -90,7 +90,7 @@ public class PlayScreen extends Screen {
       fpsCamera.moveY(34);
       fpsCamera.turn(0, 0);
       
-      bgm = game.getAudio().newMusic("orange-fields-evermore.mp3");
+      bgm = game.getAudio().newMusic("orange-fields-evermore.ogg");
       bgm.setVolume(0.5f);
       bgm.setLooping(true);
 
