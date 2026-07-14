@@ -1,8 +1,9 @@
 # Próximos passos
 
 - [x] Separar Hotbar de PlayScreen
-- [ ] Separar interface da PlayScreen
+- [x] Separar interface da PlayScreen
 - [x] Separar interação com blocos
+- [ ] Separar rederizador de seleção do jogo
 - [ ] Criar Item e ItemStack
 - [ ] Criar inventário
 - [ ] Adicionar árvores

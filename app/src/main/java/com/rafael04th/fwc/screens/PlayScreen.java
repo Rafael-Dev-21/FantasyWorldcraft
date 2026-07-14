@@ -27,6 +27,7 @@ import com.rafael04th.fwc.input.Input;
 import com.rafael04th.fwc.input.OrbitControl;
 import com.rafael04th.fwc.input.VirtualButton;
 import com.rafael04th.fwc.input.VirtualJoystick;
+import com.rafael04th.fwc.render.HudRenderer;
 import com.rafael04th.fwc.world.Block;
 import com.rafael04th.fwc.world.BlockHit;
 import com.rafael04th.fwc.world.Blocks;
@@ -66,8 +67,8 @@ public class PlayScreen extends Screen {
   private OrbitControl orbit;
   private VirtualButton btnBreak, btnPlace, btnJump, btnNextBlock;
   private Texture uiAtlas;
-  private TextureRegion joystickBaseRegion, joystickHandleRegion, btnBreakRegion, btnPlaceRegion, btnJumpRegion;
   private SpriteBatcher spriteBatcher;
+  private HudRenderer hudRenderer;
   
   private Player player;
   
@@ -159,11 +160,16 @@ public class PlayScreen extends Screen {
       worldRenderer = new WorldRenderer(cubeProgram, fpsCamera, boxTexture);
       
       uiAtlas = loader.loadTexture("ui_atlas.png");
-      joystickBaseRegion = new TextureRegion(uiAtlas, 0, 0, 64, 64);
-      joystickHandleRegion = new TextureRegion(uiAtlas, 64, 0, 16, 16);
-      btnBreakRegion = new TextureRegion(uiAtlas, 64, 16, 16, 16);
-      btnPlaceRegion = new TextureRegion(uiAtlas, 80, 16, 16, 16);
-      btnJumpRegion = new TextureRegion(uiAtlas, 80, 0, 16, 16);
+      {
+        TextureRegion joystickBaseRegion, joystickHandleRegion, btnBreakRegion, btnPlaceRegion, btnJumpRegion;
+
+        joystickBaseRegion = new TextureRegion(uiAtlas, 0, 0, 64, 64);
+        joystickHandleRegion = new TextureRegion(uiAtlas, 64, 0, 16, 16);
+        btnBreakRegion = new TextureRegion(uiAtlas, 64, 16, 16, 16);
+        btnPlaceRegion = new TextureRegion(uiAtlas, 80, 16, 16, 16);
+        btnJumpRegion = new TextureRegion(uiAtlas, 80, 0, 16, 16);
+        hudRenderer = new HudRenderer(joystickBaseRegion, joystickHandleRegion, btnBreakRegion, btnPlaceRegion, btnJumpRegion, joystickHandleRegion, joystickHandleRegion);
+      }
       spriteBatcher = new SpriteBatcher(1000);
       
       selectMesh = new Mesh(/*wireMesher.cube(new float[]{0,0,0}, new int[]{0,0,0}).build()*/ new WireFrameMesher().cube(new float[]{0,0,0}).build(), VoxelFormats.JUST_POSITION);
@@ -242,29 +248,10 @@ public class PlayScreen extends Screen {
 
       scratchMat.identity().ortho2D(0, glGraphics.getWidth(), glGraphics.getHeight(), 0).get(scratch);
       uiProgram.bind();
-      uiAtlas.bind();
-      spriteBatcher.beginBatch(uiProgram, uiAtlas);
       uiProgram.setUniform1i("uTex", 0);
-      uiProgram.setUniformMat4("uMVP", scratch, 0);
-      {
-        float diameter = joystick.radius * 2;
-        spriteBatcher.drawSprite(joystick.centerX, joystick.centerY, diameter, diameter, joystickBaseRegion);
-        spriteBatcher.drawSprite(joystick.currentX(), joystick.currentY(), diameter/4f, diameter/4f, joystickHandleRegion);
-      }
-      {
-        spriteBatcher.drawSprite(btnBreak.x+btnBreak.width/2, btnBreak.y+btnBreak.height/2, btnBreak.width, btnBreak.height, btnBreakRegion);
-        spriteBatcher.drawSprite(btnPlace.x+btnPlace.width/2, btnPlace.y+btnPlace.height/2, btnPlace.width, btnPlace.height, btnPlaceRegion);
-        spriteBatcher.drawSprite(btnJump.x+btnJump.width/2, btnJump.y+btnJump.height/2, btnJump.width, btnJump.height, btnJumpRegion);
-        spriteBatcher.drawSprite(btnNextBlock.x+btnNextBlock.width/2, btnNextBlock.y+btnNextBlock.height/2, btnNextBlock.width, btnNextBlock.height, joystickHandleRegion);
-      }
-      {
-        // Aimcross
-        float x = glGraphics.getWidth()/2;
-        float y = glGraphics.getHeight()/2;
-        float len = Math.min(x,y)/10;
-        spriteBatcher.drawSprite(x, y, len, len, joystickHandleRegion);
-      }
-      spriteBatcher.endBatch(uiProgram);
+      uiProgram.setUniformMat4("uMVP", scratch, 0 );
+      uiAtlas.bind();
+      hudRenderer.render(spriteBatcher, uiProgram, uiAtlas, glGraphics, joystick, btnBreak, btnPlace, btnJump, btnNextBlock);
     } catch (Exception e) {
       ((FantasyWorldcraft) game).toastException(e);
     }

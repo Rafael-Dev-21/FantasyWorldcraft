@@ -77,7 +77,7 @@ public class World {
     if (cy < 0) cy += Chunk.HEIGHT;
     int cz = z % Chunk.DEPTH;
     if (cz < 0) cz += Chunk.DEPTH;
-      return Optional.of(c.get(cx, cy, cz));
+    return Optional.of(c.get(cx, cy, cz));
   }
   
   public synchronized void set(int x, int y, int z, Block b) {
