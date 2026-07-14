@@ -77,7 +77,7 @@ public class MeshBuilder {
     int baseVertex = vertexCount;
     
     float u = (tile % atlasCols) / (float)atlasCols;
-    float v = ((float) tile / atlasCols) / (float)atlasRows;
+    float v = (tile / atlasCols) / (float)atlasRows;
     
     return
       vertex(pos[0], pos[1], pos[2], norm[0], norm[1], norm[2], u, v, color[0], color[1], color[2])
