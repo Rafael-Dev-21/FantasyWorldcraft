@@ -1,13 +1,11 @@
 package com.rafael04th.fwc.world;
 
 import com.rafael04th.fwc.entity.Player;
-import com.rafael04th.fwc.graphics.Camera;
 import com.rafael04th.fwc.world.gen.ChunkMaker;
 import com.rafael04th.fwc.world.meshing.ChunkMesher;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import org.joml.Vector3f;
 
 public class World {
   private final Map<Long, Chunk> chunks = new ConcurrentHashMap<>();

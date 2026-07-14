@@ -11,7 +11,7 @@ import com.rafael04th.fwc.graphics.VoxelFormats;
 
 public class SpriteBatcher {
   private Mesh mesh = null;
-  private MeshBuilder meshBuilder;
+  private final MeshBuilder meshBuilder;
   int numSprites;
 
   public SpriteBatcher(int maxSprites) {
@@ -21,8 +21,8 @@ public class SpriteBatcher {
     int j = 0;
     for (int i = 0; i < maxSprites; i++, j += 4) {
       meshBuilder.indices(
-        j+0, j+1, j+2,
-        j+2, j+3, j+0
+              j, j+1, j+2,
+        j+2, j+3, j
       );
     } 
   }

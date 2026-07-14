@@ -2,7 +2,7 @@ package com.rafael04th.fwc.util;
 
 public class SplitMix32 {
 
-  private long seed;
+  private final long seed;
   public SplitMix32(long seed) {
     this.seed = seed;
   }

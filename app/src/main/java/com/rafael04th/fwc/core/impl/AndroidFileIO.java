@@ -11,8 +11,8 @@ import java.io.OutputStream;
 import com.rafael04th.fwc.io.FileIO;
 
 public class AndroidFileIO implements FileIO {
-  private AssetManager am;
-  private File extDir;
+  private final AssetManager am;
+  private final File extDir;
   
   AndroidFileIO(Context context) {
     this.am = context.getAssets();

@@ -8,7 +8,7 @@ public class Fbm implements Noise {
   private float persistence=0.5f;
   private int octaves=3;
   
-  private Noise base;
+  private final Noise base;
   
   public Fbm(Noise base) {
     this.base = base;

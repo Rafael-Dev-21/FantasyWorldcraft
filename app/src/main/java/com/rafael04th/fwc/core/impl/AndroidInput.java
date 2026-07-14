@@ -6,9 +6,9 @@ import java.util.List;
 import com.rafael04th.fwc.input.Input;
 
 public class AndroidInput implements Input {
-  AccelerometerHandler accelHandler;
-  KeyboardHandler keyHandler;
-  TouchHandler touchHandler;
+  final AccelerometerHandler accelHandler;
+  final KeyboardHandler keyHandler;
+  final TouchHandler touchHandler;
 
   AndroidInput(Context context, View view, float scaleX, float scaleY) {
     accelHandler = new AccelerometerHandler(context);

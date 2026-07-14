@@ -3,12 +3,12 @@ package com.rafael04th.fwc.physics;
 import org.joml.Vector3f;
 
 public abstract class Integrator {
-  public static interface Mover {
+  public interface Mover {
     void move(KinematicBody body, float dt);
   }
 
-  protected KinematicBody body;
-  protected Mover mover;
+  protected final KinematicBody body;
+  protected final Mover mover;
   
   public Integrator(KinematicBody body, Mover mover) {
     this.body = body;

@@ -13,13 +13,13 @@ import org.joml.Matrix4f;
 
 public class WorldRenderer {
 
-  private ShaderProgram program;
-  private Camera camera;
-  private Texture texture;
+  private final ShaderProgram program;
+  private final Camera camera;
+  private final Texture texture;
 
-  private Transform t = new Transform();
-  private Matrix4f mvp = new Matrix4f();
-  private float[] scratch = new float[16];
+  private final Transform t = new Transform();
+  private final Matrix4f mvp = new Matrix4f();
+  private final float[] scratch = new float[16];
 
   public WorldRenderer(ShaderProgram sp, Camera cam, Texture tex) {
     program = sp;

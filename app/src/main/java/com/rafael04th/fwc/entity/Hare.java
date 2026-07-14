@@ -4,7 +4,6 @@ import com.rafael04th.fwc.physics.Integrator;
 import com.rafael04th.fwc.physics.LeapfrogIntegrator;
 import com.rafael04th.fwc.physics.WorldCollideMover;
 import com.rafael04th.fwc.world.World;
-import org.joml.Vector3f;
 
 public class Hare extends DynamicGameObject3D {
   private static final float HARE_THICK = 0.1f;

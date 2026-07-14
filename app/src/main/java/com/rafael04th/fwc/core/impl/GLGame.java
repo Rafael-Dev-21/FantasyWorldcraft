@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import com.rafael04th.fwc.audio.Audio;
@@ -31,7 +32,7 @@ public abstract class GLGame extends Activity implements Game, Renderer {
   FileIO fileIO;
   Screen screen;
   GLGameState state = GLGameState.Initialized;
-  Object stateChanged = new Object();
+  final Object stateChanged = new Object();
   long startTime = System.nanoTime();
 
   @Override
@@ -114,7 +115,9 @@ public abstract class GLGame extends Activity implements Game, Renderer {
         try {
           stateChanged.wait();
           break;
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+          Log.e("GLGame.class", "Could not pause/finish game", e);
+        }
       }
     }
     glView.onPause();

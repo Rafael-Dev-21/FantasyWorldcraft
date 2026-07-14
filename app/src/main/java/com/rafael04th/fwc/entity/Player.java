@@ -5,24 +5,18 @@ import com.rafael04th.fwc.input.OrbitControl;
 import com.rafael04th.fwc.input.VirtualButton;
 import com.rafael04th.fwc.input.VirtualJoystick;
 import com.rafael04th.fwc.physics.Integrator;
-import com.rafael04th.fwc.physics.KinematicBody;
 import com.rafael04th.fwc.physics.LeapfrogIntegrator;
 import com.rafael04th.fwc.physics.WorldCollideMover;
-import com.rafael04th.fwc.world.AABB;
-import com.rafael04th.fwc.world.Block;
-import com.rafael04th.fwc.world.Blocks;
 import com.rafael04th.fwc.world.World;
-import java.util.Optional;
-import org.joml.Vector3f;
 
 public class Player extends DynamicGameObject3D {
   private static final float GRAVITY = -9.8f;
   private float yaw, pitch;
-  private float moveSpeed = 36.5f;
-  private float turnSpeed = 6.0f;
+  private final float moveSpeed = 36.5f;
+  private final float turnSpeed = 6.0f;
 
-  private Integrator leapfrog;
-  private WorldCollideMover mover;
+  private final Integrator leapfrog;
+  private final WorldCollideMover mover;
 
   public Player() {
     super(0,0,0, -0.25f, 0f, -0.25f, 0.25f, 1.75f, 0.25f);

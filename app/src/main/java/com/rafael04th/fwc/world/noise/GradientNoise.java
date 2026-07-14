@@ -14,7 +14,7 @@ public abstract class GradientNoise implements Noise {
     {-1, 1}
   };
 
-  protected SplitMix32 mix;
+  protected final SplitMix32 mix;
 
   public GradientNoise(SplitMix32 mix) {
     this.mix = mix;

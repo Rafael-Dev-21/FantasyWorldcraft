@@ -13,10 +13,6 @@ public class FantasyWorldcraft extends GLGame
 
   public void toastException(final Exception e) {
     runOnUiThread(
-        new Runnable() {
-          public void run() {
-            Toast.makeText(FantasyWorldcraft.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-          }
-        });
+            () -> Toast.makeText(FantasyWorldcraft.this, e.getMessage(), Toast.LENGTH_SHORT).show());
   }
 }

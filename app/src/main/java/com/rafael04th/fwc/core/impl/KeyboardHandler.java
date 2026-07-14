@@ -9,18 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KeyboardHandler implements OnKeyListener {
-  boolean[] pressedKeys = new boolean[128];
-  Pool<KeyEvent> keyEventPool;
-  List<KeyEvent> keyEventsBuffer = new ArrayList<>();
-  List<KeyEvent> keyEvents = new ArrayList<>();
+  final boolean[] pressedKeys = new boolean[128];
+  final Pool<KeyEvent> keyEventPool;
+  final List<KeyEvent> keyEventsBuffer = new ArrayList<>();
+  final List<KeyEvent> keyEvents = new ArrayList<>();
 
   public KeyboardHandler(View view) {
     PoolObjectFactory<KeyEvent> factory =
-        new PoolObjectFactory<KeyEvent>() {
-          public KeyEvent createObject() {
-            return new KeyEvent();
-          }
-        };
+            KeyEvent::new;
     keyEventPool = new Pool<>(factory, 100);
     view.setOnKeyListener(this);
     view.setFocusableInTouchMode(true);

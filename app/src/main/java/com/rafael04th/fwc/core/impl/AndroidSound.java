@@ -4,8 +4,8 @@ import android.media.SoundPool;
 import com.rafael04th.fwc.audio.Sound;
 
 public class AndroidSound implements Sound {
-  int soundId;
-  SoundPool soundPool;
+  final int soundId;
+  final SoundPool soundPool;
 
   AndroidSound(SoundPool soundPool, int soundId) {
     this.soundPool = soundPool;

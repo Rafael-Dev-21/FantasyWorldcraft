@@ -8,15 +8,16 @@ import org.joml.Vector3f;
 public class Camera {
   public static final Vector3f GLOBAL_UP = new Vector3f(0, 1, 0);
 
-  private Vector3f pos;
-  private Vector3f rot;
+  private final Vector3f pos;
+  private final Vector3f rot;
 
-  private Vector3f up, right, forward, target;
-  private Matrix4f viewMatrix, projMatrix, vpMatrix;
-  private float fov, aspect, near, far;
+  private final Vector3f up, right, forward, target;
+  private final Matrix4f viewMatrix, projMatrix, vpMatrix;
+  private final float fov, near, far;
+  private float aspect;
 
   private boolean dirty = true;
-  private Vector3f moveXZ = new Vector3f();
+  private final Vector3f moveXZ = new Vector3f();
 
   public Camera() {
     pos = new Vector3f(0, 0, 0);

@@ -1,6 +1,5 @@
 package com.rafael04th.fwc.graphics;
 
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +19,10 @@ public class WireFrameMesher {
     {-1, 0, 0}, {-1, 0, 0}
   };
 
-private List<Float> vertices = new ArrayList<>();
-  private List<Integer> indices = new ArrayList<>();
+  private final List<Float> vertices = new ArrayList<>();
+  private final List<Integer> indices = new ArrayList<>();
   private int vertexCount = 0;
-  private int vertexStride;
+  private final int vertexStride;
 
   public WireFrameMesher() {
     vertexStride = 3;

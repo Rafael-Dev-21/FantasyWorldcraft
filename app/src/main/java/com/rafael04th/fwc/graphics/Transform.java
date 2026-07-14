@@ -6,10 +6,10 @@ import org.joml.Vector3f;
 
 public class Transform {
 
-  public Vector3f translation;
-  public Vector3f scale;
-  public Quaternionf rotation;
-  private Matrix4f transformMatrix;
+  public final Vector3f translation;
+  public final Vector3f scale;
+  public final Quaternionf rotation;
+  private final Matrix4f transformMatrix;
   
   public Transform() {
     translation = new Vector3f(0, 0, 0);

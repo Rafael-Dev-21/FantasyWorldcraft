@@ -1,5 +1,7 @@
 package com.rafael04th.fwc.world.meshing;
 
+import android.util.Log;
+
 import com.rafael04th.fwc.graphics.MeshBuilder;
 import com.rafael04th.fwc.graphics.MeshData;
 import com.rafael04th.fwc.world.Block;
@@ -12,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ChunkMesher {
   private class WorkerMesher implements Runnable {
-    MeshBuilder builder = new MeshBuilder(hasNormal, hasUv, hasColor, atlasCols, atlasRows);
+    final MeshBuilder builder = new MeshBuilder(hasNormal, hasUv, hasColor, atlasCols, atlasRows);
   
     public void run() {
       while (running) {
@@ -24,7 +26,9 @@ public class ChunkMesher {
           c.setPendingMesh(mesh(builder, w, c));
           c.setMeshed();
           up.put(c);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+          Log.e("ChunkMesher.class", "Could not mesh chunk", e);
+        }
       }
     }
   }
@@ -36,13 +40,13 @@ public class ChunkMesher {
   };
 
   private final boolean hasNormal, hasUv, hasColor;
-  private int atlasCols, atlasRows;
+  private final int atlasCols, atlasRows;
   private volatile boolean running = false;
   
-  private BlockingQueue<Chunk> queue = new ArrayBlockingQueue<>(256);
+  private final BlockingQueue<Chunk> queue = new ArrayBlockingQueue<>(256);
   
-  private World w;
-  private ChunkUploader up;
+  private final World w;
+  private final ChunkUploader up;
 
   public ChunkMesher(World w, ChunkUploader u, boolean n, boolean t, boolean c, int ac, int ar) {
     this.w = w;
@@ -69,7 +73,9 @@ public class ChunkMesher {
   public void put(Chunk c) {
     try {
       queue.put(c);
-    } catch (InterruptedException e) {}
+    } catch (InterruptedException e) {
+      Log.e("ChunkMesher.class", "Could not put chunk", e);
+    }
   }
 
   private MeshData mesh(MeshBuilder builder, World world, Chunk chunk) {

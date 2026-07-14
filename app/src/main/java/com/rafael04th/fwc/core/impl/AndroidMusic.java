@@ -5,11 +5,12 @@ import java.io.IOException;
 import android.content.res.AssetFileDescriptor;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.util.Log;
 
 import com.rafael04th.fwc.audio.Music;
 
 public class AndroidMusic implements Music, OnCompletionListener {
-  MediaPlayer mediaPlayer;
+  final MediaPlayer mediaPlayer;
   boolean isPrepared = false;
 
   AndroidMusic(AssetFileDescriptor assetDescriptor) {
@@ -56,10 +57,8 @@ public class AndroidMusic implements Music, OnCompletionListener {
           mediaPlayer.prepare();
         mediaPlayer.start();
       }
-    } catch (IllegalStateException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (IllegalStateException|IOException e) {
+      Log.e("AndroidMusic.class", "Could not play song", e);
     }
   }
 

@@ -19,7 +19,7 @@ public class VertexFormat {
     }
   }
   
-  private List<Element> elements = new ArrayList<>();
+  private final List<Element> elements = new ArrayList<>();
   private int stride = 0;
   
   public void push(int type, int count, boolean normalized, String name) {

@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Loader {
-  private FileIO fileIO;
+  private final FileIO fileIO;
 
   public Loader(FileIO fileIO) {
     this.fileIO = fileIO;

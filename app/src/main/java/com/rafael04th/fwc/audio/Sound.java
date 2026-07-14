@@ -1,7 +1,7 @@
 package com.rafael04th.fwc.audio;
 
 public interface Sound {
-  public void play(float volume);
+  void play(float volume);
 
-  public void dispose();
+  void dispose();
 }

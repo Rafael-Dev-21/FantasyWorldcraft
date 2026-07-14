@@ -8,7 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 
 public class ChunkUploader {
-  private BlockingQueue<Chunk> pending = new LinkedBlockingQueue<>();
+  private final BlockingQueue<Chunk> pending = new LinkedBlockingQueue<>();
 
   public void put(Chunk c) throws InterruptedException {
     if (c.isMeshed())

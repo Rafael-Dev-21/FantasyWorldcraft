@@ -4,8 +4,6 @@ import static android.opengl.GLES20.GL_LINES;
 import static android.opengl.GLES20.glDepthMask;
 import static android.opengl.GLES20.glDisableVertexAttribArray;
 
-import android.util.Log;
-
 import com.rafael04th.fwc.graphics.Camera;
 import com.rafael04th.fwc.graphics.Mesh;
 import com.rafael04th.fwc.graphics.ShaderProgram;

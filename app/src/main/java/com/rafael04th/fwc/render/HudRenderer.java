@@ -1,7 +1,6 @@
 package com.rafael04th.fwc.render;
 
 import com.rafael04th.fwc.core.impl.GLGraphics;
-import com.rafael04th.fwc.gameplay.Hotbar;
 import com.rafael04th.fwc.graphics.ShaderProgram;
 import com.rafael04th.fwc.graphics.Texture;
 import com.rafael04th.fwc.graphics.TextureRegion;
@@ -38,18 +37,17 @@ public class HudRenderer {
             batcher.drawSprite(joystick.currentX(), joystick.currentY(), diameter/4f, diameter/4f, joystickHandleRegion);
         }
         {
-            batcher.drawSprite(breakButton.x+breakButton.width/2, breakButton.y+breakButton.height/2, breakButton.width, breakButton.height, btnBreakRegion);
-            batcher.drawSprite(placeButton.x+placeButton.width/2, placeButton.y+placeButton.height/2, placeButton.width, placeButton.height, btnPlaceRegion);
-            batcher.drawSprite(jumpButton.x+jumpButton.width/2, jumpButton.y+jumpButton.height/2, jumpButton.width, jumpButton.height, btnJumpRegion);
-            batcher.drawSprite(jumpButton.x+jumpButton.width/2, jumpButton.y+jumpButton.height/2, jumpButton.width, jumpButton.height, btnJumpRegion);
-            batcher.drawSprite(nextButton.x+nextButton.width/2, nextButton.y+nextButton.height/2, nextButton.width, nextButton.height, joystickHandleRegion);
+            batcher.drawSprite(breakButton.x+ (float) breakButton.width /2, breakButton.y+ (float) breakButton.height /2, breakButton.width, breakButton.height, btnBreakRegion);
+            batcher.drawSprite(placeButton.x+ (float) placeButton.width /2, placeButton.y+ (float) placeButton.height /2, placeButton.width, placeButton.height, btnPlaceRegion);
+            batcher.drawSprite(jumpButton.x+ (float) jumpButton.width /2, jumpButton.y+ (float) jumpButton.height /2, jumpButton.width, jumpButton.height, btnJumpRegion);
+            batcher.drawSprite(nextButton.x+ (float) nextButton.width /2, nextButton.y+ (float) nextButton.height /2, nextButton.width, nextButton.height, btnNextBlockRegion);
         }
         {
             // Aimcross
-            float x = glGraphics.getWidth()/2;
-            float y = glGraphics.getHeight()/2;
+            float x = (float) glGraphics.getWidth() /2;
+            float y = (float) glGraphics.getHeight() /2;
             float len = Math.min(x,y)/10;
-            batcher.drawSprite(x, y, len, len, joystickHandleRegion);
+            batcher.drawSprite(x, y, len, len, crossRegion);
         }
         batcher.endBatch(program);
     }

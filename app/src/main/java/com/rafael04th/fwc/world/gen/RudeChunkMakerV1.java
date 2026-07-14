@@ -9,9 +9,9 @@ import com.rafael04th.fwc.world.noise.Perlin;
 
 
 public class RudeChunkMakerV1 implements ChunkMaker {
-  private long seed;
-  private Fbm fbm, cont, eros, peak;
-  private float playerY;
+  private final long seed;
+  private final Fbm fbm, cont, eros, peak;
+
   public RudeChunkMakerV1(long seed) {
     this.seed = seed;
     SplitMix32 mix = new SplitMix32(seed);
@@ -86,7 +86,7 @@ public class RudeChunkMakerV1 implements ChunkMaker {
   }
   
   private int getHeight(float e) {
-    return (int)clamp((int)(e * 8)+32, 1, Chunk.HEIGHT);
+    return clamp((int)(e * 8)+32, 1, Chunk.HEIGHT);
   }
   
   private float cont(float cx, float cz, float x, float z) {

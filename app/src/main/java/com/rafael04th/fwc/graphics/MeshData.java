@@ -7,11 +7,11 @@ import java.nio.IntBuffer;
 
 public class MeshData {
 
-  private FloatBuffer vertices;
-  private IntBuffer indices;
-  private int vertexCount;
-  private int indexCount;
-  private int vertexSize;
+  private final FloatBuffer vertices;
+  private final IntBuffer indices;
+  private final int vertexCount;
+  private final int indexCount;
+  private final int vertexSize;
 
   public MeshData(FloatBuffer vert, int vc, IntBuffer ind, int ic, int sz) {
     vertices = vert;

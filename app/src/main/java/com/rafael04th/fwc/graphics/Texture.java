@@ -5,7 +5,7 @@ import static android.opengl.GLES20.*;
 import static android.opengl.GLUtils.*;
 
 public class Texture {
-  private int texture;
+  private final int texture;
   public final int width;
   public final int height;
 

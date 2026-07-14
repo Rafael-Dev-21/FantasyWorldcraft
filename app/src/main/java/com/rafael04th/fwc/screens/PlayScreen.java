@@ -13,14 +13,9 @@ import com.rafael04th.fwc.entity.Player;
 import com.rafael04th.fwc.gameplay.BlockInteractor;
 import com.rafael04th.fwc.gameplay.Hotbar;
 import com.rafael04th.fwc.graphics.Camera;
-import com.rafael04th.fwc.graphics.Mesh;
-import com.rafael04th.fwc.graphics.MeshBuilder;
 import com.rafael04th.fwc.graphics.ShaderProgram;
 import com.rafael04th.fwc.graphics.Texture;
 import com.rafael04th.fwc.graphics.TextureRegion;
-import com.rafael04th.fwc.graphics.Transform;
-import com.rafael04th.fwc.graphics.VoxelFormats;
-import com.rafael04th.fwc.graphics.WireFrameMesher;
 import com.rafael04th.fwc.graphics.render.SpriteBatcher;
 import com.rafael04th.fwc.graphics.render.WorldRenderer;
 import com.rafael04th.fwc.input.Input;
@@ -29,7 +24,6 @@ import com.rafael04th.fwc.input.VirtualButton;
 import com.rafael04th.fwc.input.VirtualJoystick;
 import com.rafael04th.fwc.render.HudRenderer;
 import com.rafael04th.fwc.render.SelectionRenderer;
-import com.rafael04th.fwc.world.Block;
 import com.rafael04th.fwc.world.BlockHit;
 import com.rafael04th.fwc.world.Blocks;
 import com.rafael04th.fwc.world.World;
@@ -183,6 +177,7 @@ public class PlayScreen extends Screen {
       List<Input.TouchEvent> touches = game.getInput().getTouchEvents();
       for (Input.TouchEvent te : touches) {
         if (joystick.update(te)) {
+
         } else if (btnBreak.update(te)) {
           interactor.breakBlock(fpsCamera);
 

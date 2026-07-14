@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Map;
 import static android.opengl.GLES20.*;
 
+import android.util.Log;
+
 public class ShaderProgram {
-  private int program;
+  private final int program;
   
-  private Map<String, Integer> uniformCache = new HashMap<>();
-  private Map<String, Integer> attribCache = new HashMap<>();
+  private final Map<String, Integer> uniformCache = new HashMap<>();
+  private final Map<String, Integer> attribCache = new HashMap<>();
   
   public ShaderProgram(String vertSrc, String fragSrc) {
     program = makeProgram(vertSrc, fragSrc);
@@ -49,7 +51,11 @@ public class ShaderProgram {
   
   public int getAttribLoc(String name) {
     if (attribCache.containsKey(name)) {
-      return attribCache.get(name);
+      try {
+        return attribCache.get(name);
+      } catch (NullPointerException e) {
+        Log.e("ShaderProgram.class", "Could not get attribute", e);
+      }
     }
     int loc = glGetAttribLocation(program, name);
     attribCache.put(name, loc);
@@ -58,7 +64,11 @@ public class ShaderProgram {
   
    public int getUniformLoc(String name) {
     if (uniformCache.containsKey(name)) {
-      return uniformCache.get(name);
+      try {
+        return uniformCache.get(name);
+      } catch (NullPointerException e) {
+        Log.e("ShaderProgram.class", "Could not return uniform", e);
+      }
     }
     int loc = glGetUniformLocation(program, name);
     uniformCache.put(name, loc);

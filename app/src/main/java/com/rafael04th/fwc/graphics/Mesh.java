@@ -4,9 +4,9 @@ import java.nio.Buffer;
 import static android.opengl.GLES20.*;
 
 public class Mesh {
-  private int vbo;
-  private int ibo;
-  private VertexFormat format;
+  private final int vbo;
+  private final int ibo;
+  private final VertexFormat format;
   private int count;
   
   public Mesh(Buffer vertices, int vbytes, Buffer indices, int ibytes, int count, VertexFormat format) {

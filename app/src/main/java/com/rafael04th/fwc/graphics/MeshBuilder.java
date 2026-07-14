@@ -14,27 +14,27 @@ public class MeshBuilder {
     {0, 0, 1f}, {0, 0, -1f},
     {1f, 0, 0}, {1f, 0, 0}
   };
-  private static float[][] CA = new float[][] {
+  private static final float[][] CA = new float[][] {
     {0.7f, 0.7f, 0.7f}, {0.7f, 0.7f, 0.7f},
     {0.5f, 0.5f, 0.5f}, {0.5f, 0.5f, 0.5f},
     {1.0f, 1.0f, 1.0f}, {0.3f, 0.3f, 0.3f}
   };
-  private static float[][] CC = new float[][] {
+  private static final float[][] CC = new float[][] {
     {-0.5f, 0.5f, 0.5f}, {0.5f, 0.5f, -0.5f},
     {-0.5f, 0.5f, -0.5f}, {0.5f, 0.5f, 0.5f},
     {-0.5f, 0.5f, -0.5f}, {-0.5f, -0.5f, 0.5f}
   };
   
-  private List<Float> vertices = new ArrayList<>();
-  private List<Integer> indices = new ArrayList<>();
+  private final List<Float> vertices = new ArrayList<>();
+  private final List<Integer> indices = new ArrayList<>();
   
-  private boolean hasNormal, hasUv, hasColor;
+  private final boolean hasNormal, hasUv, hasColor;
   
   private int vertexCount = 0;
-  private int vertexStride;
-  private int atlasCols, atlasRows;
+  private final int vertexStride;
+  private final int atlasCols, atlasRows;
   
-  private float tileWidth, tileHeight;
+  private final float tileWidth, tileHeight;
   
   public MeshBuilder(boolean n, boolean u, boolean c, int ac, int ar) {
     hasNormal = n;
@@ -50,10 +50,6 @@ public class MeshBuilder {
       + (hasUv ? 2 : 0)
       + (hasColor ? 3 : 0);
   }
-  /*
-  public MeshBuilder outlineQuad(float[] pos, float[] down, float[] right) {
-    
-  }*/
   
   public MeshBuilder vertex(float x, float y, float z, float nx, float ny, float nz, float u, float v, float r, float g, float b) {
     pos(x, y, z)
@@ -81,7 +77,7 @@ public class MeshBuilder {
     int baseVertex = vertexCount;
     
     float u = (tile % atlasCols) / (float)atlasCols;
-    float v = (tile / atlasCols) / (float)atlasRows;
+    float v = ((float) tile / atlasCols) / (float)atlasRows;
     
     return
       vertex(pos[0], pos[1], pos[2], norm[0], norm[1], norm[2], u, v, color[0], color[1], color[2])

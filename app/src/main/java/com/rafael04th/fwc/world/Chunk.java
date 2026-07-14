@@ -19,9 +19,9 @@ public class Chunk {
   
   private Mesh mesh = null;
   private volatile MeshData pendingMesh = null;
-  private AtomicInteger state = new AtomicInteger(STATE_DIRTY);
+  private final AtomicInteger state = new AtomicInteger(STATE_DIRTY);
   
-  private AABB bounds;
+  private final AABB bounds;
 
   public Chunk(int x, int z) {
     for (int i = 0; i < WIDTH; i++) {
@@ -98,7 +98,7 @@ public class Chunk {
     return mesh;
   }
 
-  public static final int linearize(int i, int j, int k) {
+  public static int linearize(int i, int j, int k) {
     return i+WIDTH*(j+k*HEIGHT);
   }
   
