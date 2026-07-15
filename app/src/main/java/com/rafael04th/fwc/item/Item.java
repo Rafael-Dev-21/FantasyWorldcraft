@@ -15,16 +15,16 @@ public class Item {
   public final int icon;
   public final int maxStackSize;
   // Can be null
-  public final Block block;
+  public final int blockId;
   public final String name;
   
   private TextureRegion region = null;
 
-  Item(String name, int icon, Block block, int maxStackSize) {
+  Item(String name, int icon, int blockId, int maxStackSize) {
     this.id = count++;
     this.name = name;
     this.icon = icon;
-    this.block = block;
+    this.blockId = blockId;
     this.maxStackSize = maxStackSize;
     ITEMS.add(this);
   }
@@ -36,6 +36,16 @@ public class Item {
 
   public TextureRegion region() {
     return region;
+  }
+
+  public Block block() {
+    return Block.forId(blockId);
+  }
+
+  public static Item forId(int id) {
+    if (id < 0)
+      return null;
+    return ITEMS.get(id);
   }
 
   public static int count() {

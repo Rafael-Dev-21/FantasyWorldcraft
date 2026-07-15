@@ -28,4 +28,12 @@ public class Hotbar {
     public int index() {
         return index;
     }
+
+    public int start() {
+        return START;
+    }
+
+    public int length() {
+        return LENGTH;
+    }
 }

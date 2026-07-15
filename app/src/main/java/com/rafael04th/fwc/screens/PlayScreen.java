@@ -12,6 +12,7 @@ import com.rafael04th.fwc.core.impl.GLGraphics;
 import com.rafael04th.fwc.entity.Player;
 import com.rafael04th.fwc.gameplay.BlockInteractor;
 import com.rafael04th.fwc.gameplay.Hotbar;
+import com.rafael04th.fwc.gameplay.Inventory;
 import com.rafael04th.fwc.graphics.Camera;
 import com.rafael04th.fwc.graphics.ShaderProgram;
 import com.rafael04th.fwc.graphics.Texture;
@@ -22,6 +23,8 @@ import com.rafael04th.fwc.input.Input;
 import com.rafael04th.fwc.input.OrbitControl;
 import com.rafael04th.fwc.input.VirtualButton;
 import com.rafael04th.fwc.input.VirtualJoystick;
+import com.rafael04th.fwc.item.ItemStack;
+import com.rafael04th.fwc.item.Items;
 import com.rafael04th.fwc.render.HudRenderer;
 import com.rafael04th.fwc.render.SelectionRenderer;
 import com.rafael04th.fwc.world.BlockHit;
@@ -36,7 +39,8 @@ import org.joml.Matrix4f;
 import static android.opengl.GLES20.*;
 
 public class PlayScreen extends Screen {
-  //public static final Hotbar HOTBAR = new Hotbar(Blocks.COBBLE, Blocks.DIRT, Blocks.SAND, Blocks.GRASS);
+  public final Inventory INVENTORY = new Inventory(36);
+  public final Hotbar HOTBAR;
 
 
   GLGraphics glGraphics;
@@ -70,69 +74,70 @@ public class PlayScreen extends Screen {
 
   public PlayScreen(Game game) {
     super(game);
-    try {
-      glGraphics = ((GLGame) game).getGLGraphics();
-      loader = new Loader(game.getFileIO());
+    glGraphics = ((GLGame) game).getGLGraphics();
+    loader = new Loader(game.getFileIO());
 
-      fpsCamera = new Camera();
-      fpsCamera.moveXZ(0, 0);
-      fpsCamera.moveY(34);
-      fpsCamera.turn(0, 0);
-      
-      bgm = game.getAudio().newMusic("orange-fields-evermore.ogg");
-      bgm.setVolume(0.5f);
-      bgm.setLooping(true);
+    fpsCamera = new Camera();
+    fpsCamera.moveXZ(0, 0);
+    fpsCamera.moveY(34);
+    fpsCamera.turn(0, 0);
 
-      world = new World(new RudeChunkMakerV1(System.nanoTime()), 0, 0);
-      uploader = new ChunkUploader();
-      mesher = new ChunkMesher(world, uploader, false, true, true, 128 / 16, 128 / 16);
-      interactor = new BlockInteractor(world);
-      
-      {
-        int cx = Math.min(glGraphics.getWidth(), glGraphics.getHeight())/5;
-        int cy = glGraphics.getHeight()-cx;
-        float radius = cx;
-        int pad = cx / 5;
-        cx += pad;
-        cy -= pad;
-        joystick = new VirtualJoystick(cx, cy, radius);
-      }
-      orbit = new OrbitControl();
-      {
-        int len = Math.min(glGraphics.getHeight(), glGraphics.getWidth())/10;
-        int pad = len / 4;
-        int startX = glGraphics.getWidth()-(len+pad)*4 - pad;
-        int startY = glGraphics.getHeight() -  len - pad * 3;
-        int x = startX;
-        int y = startY;
-        
-        {
-          btnBreak = new VirtualButton(x, y, len, len);
-          x += pad + len;
-          y -= pad + len;
-        }
-        {
-          btnPlace = new VirtualButton(x, y, len, len);
-          x += pad + len;
-          y -= pad + len;
-        }
-        {
-          btnJump = new VirtualButton(x, y, len, len);
-          x += pad + len;
-          y -= pad + len;
-        }
-        {
-          btnNextBlock = new VirtualButton(x, y, len, len);
-          x += pad + len;
-          y -= pad + len;
-        }
-      }
+    bgm = game.getAudio().newMusic("orange-fields-evermore.ogg");
+    bgm.setVolume(0.5f);
+    bgm.setLooping(true);
 
-      player = world.newPlayer();
-      
-    } catch (Exception e) {
-      ((FantasyWorldcraft) game).toastException(e);
+    world = new World(new RudeChunkMakerV1(System.nanoTime()), 0, 0);
+    uploader = new ChunkUploader();
+    mesher = new ChunkMesher(world, uploader, false, true, true, 128 / 16, 128 / 16);
+    interactor = new BlockInteractor(world);
+
+    INVENTORY.add(new ItemStack(Items.COBBLE_BLOCK, 72));
+
+    {
+      int cx = Math.min(glGraphics.getWidth(), glGraphics.getHeight())/5;
+      int cy = glGraphics.getHeight()-cx;
+      float radius = cx;
+      int pad = cx / 5;
+      cx += pad;
+      cy -= pad;
+      joystick = new VirtualJoystick(cx, cy, radius);
     }
+    orbit = new OrbitControl();
+    {
+      int len = Math.min(glGraphics.getHeight(), glGraphics.getWidth())/10;
+      int pad = len / 4;
+      int startX = glGraphics.getWidth()-(len+pad)*4 - pad;
+      int startY = glGraphics.getHeight() -  len - pad * 3;
+      int x = startX;
+      int y = startY;
+
+      {
+        btnBreak = new VirtualButton(x, y, len, len);
+        x += pad + len;
+        y -= pad + len;
+      }
+      {
+        btnPlace = new VirtualButton(x, y, len, len);
+        x += pad + len;
+        y -= pad + len;
+      }
+      {
+        btnJump = new VirtualButton(x, y, len, len);
+        x += pad + len;
+        y -= pad + len;
+      }
+      {
+        btnNextBlock = new VirtualButton(x, y, len, len);
+        x += pad + len;
+        y -= pad + len;
+      }
+      {
+        int hotbarLen = Math.min(9, Math.max(3, glGraphics.getWidth()/64));
+        HOTBAR = new Hotbar(INVENTORY, 0, hotbarLen);
+      }
+    }
+
+    player = world.newPlayer();
   }
 
   public void resume() {
@@ -179,13 +184,21 @@ public class PlayScreen extends Screen {
         if (joystick.update(te)) {
 
         } else if (btnBreak.update(te)) {
-          interactor.breakBlock(fpsCamera);
-
+          Optional<BlockHit> result = interactor.breakBlock(fpsCamera);
+          result.ifPresent(hit -> {
+            if (hit.block.drop() != null)
+              INVENTORY.add(new ItemStack(hit.block.drop(), 1));
+          });
         } else if (btnPlace.update(te)) {
-//          interactor.placeBlock(fpsCamera, HOTBAR.current());
+          ItemStack is = HOTBAR.current();
+          if (!is.isEmpty() && is.item().block() != null) {
+            if (interactor.placeBlock(fpsCamera, is.item().block())) {
+              is.remove(1);
+            }
+          }
         } else if (btnJump.update(te)) {
         } else if (btnNextBlock.update(te)) {
-//          if (te.type == Input.TouchEvent.TOUCH_DOWN) HOTBAR.next();
+          if (te.type == Input.TouchEvent.TOUCH_DOWN) HOTBAR.next();
         } else if (orbit.update(deltaTime, te)) {}
       }
       uploader.update();

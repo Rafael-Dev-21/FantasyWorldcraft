@@ -24,20 +24,26 @@ public class BlockInteractor {
             placeBreakTimer -= deltaTime;
         }
     }
-    public void breakBlock(Camera camera) {
+    public Optional<BlockHit> breakBlock(Camera camera) {
         Optional<BlockHit> result = hit(camera, 11f);
         if (result.isPresent() && placeBreakTimer <= 0.001f) {
             BlockHit hit = result.get();
             world.set((int)hit.x, (int)hit.y, (int)hit.z, Blocks.AIR);
             placeBreakTimer = PLACE_BREAK_COOLDOWN;
+            return result;
+        } else {
+            return Optional.empty();
         }
     }
-    public void placeBlock(Camera camera, Block block) {
+    public boolean placeBlock(Camera camera, Block block) {
         Optional<BlockHit> result = hit(camera, 11f);
         if (result.isPresent() && placeBreakTimer <= 0.001f) {
             BlockHit hit = result.get();
             world.set((int)(hit.x+hit.normalX), (int)(hit.y+hit.normalY), (int)(hit.z+hit.normalZ), block);
             placeBreakTimer = PLACE_BREAK_COOLDOWN;
+            return true;
+        } else {
+            return false;
         }
     }
 

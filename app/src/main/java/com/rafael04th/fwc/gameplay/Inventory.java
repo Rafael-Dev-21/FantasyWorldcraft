@@ -3,7 +3,6 @@ package com.rafael04th.fwc.gameplay;
 import com.rafael04th.fwc.item.Item;
 import com.rafael04th.fwc.item.ItemStack;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,6 +19,23 @@ public class Inventory {
 
   public void add(ItemStack is) {
     assert (!is.isEmpty());
+    int total = is.amount();
+    int firstEmpty = limit();
+    for (int i = 0; i < SLOTS.length && total > 0; i++) {
+      ItemStack slot = SLOTS[i];
+      if (slot.item() == is.item()) {
+        total = slot.add(total);
+        is.remove(is.amount() - total);
+      }
+      if (slot.isEmpty()) {
+        if (firstEmpty == limit()) {
+          firstEmpty = i;
+        }
+      }
+    }
+    if (total > 0) {
+      SLOTS[firstEmpty] = is.copy();
+    }
   }
 
   public void remove(ItemStack is) {
@@ -69,7 +85,7 @@ public class Inventory {
     return SLOTS.length;
   }
 
-  public Collection slots() {
-    return Collections.unmodifiableList(Arrays.asList(SLOTS));
+  public List<ItemStack> slots() {
+    return List.of(SLOTS);
   }
 }
