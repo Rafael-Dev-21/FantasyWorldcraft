@@ -44,9 +44,10 @@ public class ItemStack {
   public boolean equals(Object o) {
     if (o == null)
       return false;
-    if (!(o instanceof ItemStack is))
+    if (!(o instanceof ItemStack))
       return false;
-    return is.item == item && is.amount == amount;
+    ItemStack is = (ItemStack)o;
+    return item == is.item && amount == is.amount;
   }
 
   public int hashCode() {

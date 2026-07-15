@@ -36,7 +36,7 @@ import org.joml.Matrix4f;
 import static android.opengl.GLES20.*;
 
 public class PlayScreen extends Screen {
-  public static final Hotbar HOTBAR = new Hotbar(Blocks.COBBLE, Blocks.DIRT, Blocks.SAND, Blocks.GRASS);
+  //public static final Hotbar HOTBAR = new Hotbar(Blocks.COBBLE, Blocks.DIRT, Blocks.SAND, Blocks.GRASS);
 
 
   GLGraphics glGraphics;
@@ -182,10 +182,10 @@ public class PlayScreen extends Screen {
           interactor.breakBlock(fpsCamera);
 
         } else if (btnPlace.update(te)) {
-          interactor.placeBlock(fpsCamera, HOTBAR.current());
+//          interactor.placeBlock(fpsCamera, HOTBAR.current());
         } else if (btnJump.update(te)) {
         } else if (btnNextBlock.update(te)) {
-          if (te.type == Input.TouchEvent.TOUCH_DOWN) HOTBAR.next();
+//          if (te.type == Input.TouchEvent.TOUCH_DOWN) HOTBAR.next();
         } else if (orbit.update(deltaTime, te)) {}
       }
       uploader.update();
